@@ -1,0 +1,244 @@
+﻿@* Views/Shared/_EmailLayout.cshtml *@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>@ViewData["Title"] - Project2EmailNight</title>
+
+    <!-- Vendor CSS (Vertical Template) -->
+    <link href="/vertical/assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+    <link href="/vertical/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+    <link href="/vertical/assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+
+    <link href="/vertical/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/vertical/assets/css/bootstrap-extended.css" rel="stylesheet" />
+    <link href="/vertical/assets/css/app.css" rel="stylesheet" />
+    <link href="/vertical/assets/css/icons.css" rel="stylesheet" />
+    <link href="/vertical/assets/css/dark-theme.css" rel="stylesheet" />
+    <link href="/vertical/assets/css/semi-dark.css" rel="stylesheet" />
+    <link href="/vertical/assets/css/header-colors.css" rel="stylesheet" />
+
+    <!-- Quill -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet" />
+
+    @RenderSection("Styles", required: false)
+</head>
+
+<body>
+    <div class="wrapper">
+
+        <!-- ✅ SIDEBAR: Partial yerine ViewComponent -->
+        @await Component.InvokeAsync("_EmailSidebarCounts")
+
+        <!-- header -->
+        @await Html.PartialAsync("~/Views/Shared/Partials/_TopHeader.cshtml")
+
+        <!-- page-wrapper -->
+        <div class="page-wrapper">
+            <div class="page-content-wrapper">
+                <div class="page-content">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+
+        <!-- overlay -->
+        <div class="overlay toggle-btn-mobile"></div>
+
+        <!-- Back To Top -->
+        <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
+
+        <!-- footer -->
+        <div class="footer">
+            <p class="mb-0">Project2EmailNight @@2026</p>
+        </div>
+    </div>
+
+    <!-- Vendor JS (Vertical Template) -->
+    <script src="/vertical/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/vertical/assets/plugins/simplebar/js/simplebar.min.js"></script>
+    <script src="/vertical/assets/plugins/metismenu/js/metisMenu.min.js"></script>
+    <script src="/vertical/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+    <script src="/vertical/assets/js/app.js"></script>
+
+    <!-- Quill -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
+
+    <style>
+        /* Compose Window (sağ altta) */
+        .compose-window {
+            position: fixed;
+            right: 24px;
+            bottom: 0;
+            width: 520px;
+            max-width: calc(100vw - 48px);
+            background: #fff;
+            border: 1px solid rgba(0,0,0,.15);
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.18);
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .compose-header {
+            height: 44px;
+            background: #f6f8fc;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(0,0,0,.1);
+        }
+
+        .compose-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .compose-btn {
+            border: none;
+            background: transparent;
+            width: 34px;
+            height: 30px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+            .compose-btn:hover {
+                background: rgba(0,0,0,.06);
+            }
+
+        .compose-body {
+            padding: 12px;
+            max-height: 60vh;
+            overflow: auto;
+        }
+
+        .compose-minimized .compose-body {
+            display: none;
+        }
+
+        /* Quill premium */
+        .ql-toolbar.ql-snow {
+            border-radius: 8px 8px 0 0;
+            border-color: rgba(0,0,0,.12);
+            background: #fafbff;
+        }
+
+        .ql-container.ql-snow {
+            border-radius: 0 0 8px 8px;
+            border-color: rgba(0,0,0,.12);
+            min-height: 220px;
+            font-size: 14px;
+        }
+    </style>
+
+    <!-- GLOBAL COMPOSE WINDOW -->
+    <div id="composeWindow" class="compose-window d-none">
+        <div class="compose-header">
+            <span>Yeni İleti</span>
+            <div class="compose-actions">
+                <button type="button" class="compose-btn" id="btnMinimize">—</button>
+                <button type="button" class="compose-btn" id="btnClose">✕</button>
+            </div>
+        </div>
+
+        <div class="compose-body" id="composeBody">
+            @await Html.PartialAsync("~/Views/Shared/Partials/_ComposeMessagePartial.cshtml",
+            new Project2EmailNight.Entities.Message())
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const composeWindow = document.getElementById("composeWindow");
+
+            // ✅ Sidebar component içinde var: id="btnOpenCompose"
+            const btnOpenCompose = document.getElementById("btnOpenCompose");
+
+            const btnClose = document.getElementById("btnClose");
+            const btnMinimize = document.getElementById("btnMinimize");
+
+            let quillInstance = null;
+
+            function initQuill() {
+                const editorEl = document.getElementById("composeEditor"); // partial içinde olmalı
+                if (!editorEl) return;
+
+                // aynı sayfada birden fazla init olmasın
+                if (quillInstance) return;
+
+                quillInstance = new Quill("#composeEditor", {
+                    theme: "snow",
+                    placeholder: "Mesajınızı yazın...",
+                    modules: {
+                        toolbar: [
+                            [{ header: [false, 1, 2, 3] }],
+                            ["bold", "italic", "underline"],
+                            [{ list: "ordered" }, { list: "bullet" }],
+                            ["link"],
+                            ["clean"]
+                        ]
+                    }
+                });
+
+                setTimeout(() => quillInstance.focus(), 80);
+            }
+
+            function openCompose() {
+                composeWindow.classList.remove("d-none");
+                composeWindow.classList.remove("compose-minimized");
+                setTimeout(initQuill, 50);
+            }
+
+            function closeCompose() {
+                quillInstance = null; // reset
+                composeWindow.classList.add("d-none");
+            }
+
+            if (btnOpenCompose) btnOpenCompose.addEventListener("click", openCompose);
+            if (btnClose) btnClose.addEventListener("click", closeCompose);
+            if (btnMinimize) btnMinimize.addEventListener("click", () => composeWindow.classList.toggle("compose-minimized"));
+
+            // Partial içindeki kapat butonu
+            document.addEventListener("click", (e) => {
+                if (e.target && e.target.id === "composeCloseBtn") closeCompose();
+            });
+
+            // Form submit (fetch)
+            document.addEventListener("submit", async (e) => {
+                if (e.target && e.target.id === "composeForm") {
+                    e.preventDefault();
+
+                    const hidden = document.getElementById("composeEditorHtml");
+                    if (hidden) hidden.value = quillInstance ? quillInstance.root.innerHTML : "";
+
+                    const form = e.target;
+                    const formData = new FormData(form);
+
+                    const res = await fetch(form.action, { method: "POST", body: formData });
+
+                    if (res.ok) {
+                        closeCompose();
+                        location.reload();
+                        return;
+                    }
+
+                    const err = document.getElementById("composeError");
+                    if (err) {
+                        err.classList.remove("d-none");
+                        err.innerText = "Mesaj gönderilemedi. Alanları kontrol edin.";
+                    } else {
+                        alert("Mesaj gönderilemedi.");
+                    }
+                }
+            });
+        });
+    </script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

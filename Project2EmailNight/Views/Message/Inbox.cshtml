@@ -1,0 +1,375 @@
+﻿@model List<Project2EmailNight.Entities.Message>
+@{
+    Layout = "~/Views/Shared/_EmailLayout.cshtml";
+    ViewData["Title"] = "Gelen Kutusu";
+}
+
+<style>
+    .inbox-wrapper {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 8px 30px rgba(18, 38, 63, 0.06);
+        overflow: hidden;
+    }
+
+    .inbox-header {
+        padding: 24px 24px 14px 24px;
+        border-bottom: 1px solid #f1f3f7;
+    }
+
+    .inbox-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 4px;
+    }
+
+    .inbox-subtitle {
+        color: #8a94a6;
+        font-size: 14px;
+    }
+
+    .inbox-toolbar {
+        padding: 16px 24px;
+        border-bottom: 1px solid #f1f3f7;
+        background: #fcfcfd;
+    }
+
+    .search-box {
+        position: relative;
+    }
+
+        .search-box input {
+            height: 46px;
+            border-radius: 14px;
+            border: 1px solid #e9edf3;
+            padding-left: 46px;
+            background: #fff;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #98a2b3;
+            font-size: 18px;
+        }
+
+    .mail-list {
+        padding: 8px 0;
+    }
+
+    .mail-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 16px 24px;
+        border-bottom: 1px solid #f5f6f8;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        background: #fff;
+    }
+
+        .mail-item:hover {
+            background: #faf7ff;
+        }
+
+        .mail-item.mail-unread {
+            background: #fcfbff;
+        }
+
+    .mail-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .mail-avatar {
+        width: 46px;
+        height: 46px;
+        min-width: 46px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #7c3aed, #a855f7);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 700;
+        text-transform: uppercase;
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.18);
+    }
+
+    .mail-content {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .mail-topline {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 4px;
+        min-width: 0;
+    }
+
+    .mail-from {
+        font-size: 15px;
+        font-weight: 700;
+        color: #1f2937;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 260px;
+    }
+
+    .mail-to {
+        font-size: 12px;
+        color: #98a2b3;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .mail-subject {
+        font-size: 15px;
+        font-weight: 600;
+        color: #344054;
+        margin-bottom: 3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .mail-preview {
+        font-size: 13px;
+        color: #98a2b3;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+
+    .mail-right {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-shrink: 0;
+    }
+
+    .mail-date {
+        font-size: 13px;
+        color: #8a94a6;
+        min-width: 120px;
+        text-align: right;
+    }
+
+    .mail-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .empty-state {
+        padding: 70px 20px;
+        text-align: center;
+        color: #98a2b3;
+    }
+
+        .empty-state i {
+            font-size: 52px;
+            margin-bottom: 12px;
+            display: block;
+            color: #c4c9d4;
+        }
+
+    @@media (max-width: 991.98px) {
+        .mail-item {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .mail-right {
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .mail-date {
+            text-align: left;
+            min-width: auto;
+        }
+
+        .mail-from {
+            max-width: 180px;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .inbox-header,
+        .inbox-toolbar,
+        .mail-item {
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+
+        .mail-actions {
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .btn-icon {
+            width: 34px;
+            height: 34px;
+        }
+    }
+</style>
+
+<div class="inbox-wrapper">
+    <div class="inbox-header">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div>
+                <div class="inbox-title">Gelen Kutusu</div>
+                <div class="inbox-subtitle">@((Model?.Count) ?? 0) mesaj</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="inbox-toolbar">
+        <div class="row g-2 align-items-center">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="search-box">
+                    <i class="bx bx-search"></i>
+                    <input id="inboxSearch" type="text" class="form-control" placeholder="Mail, konu veya içerik ara...">
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-8 text-md-end">
+                <a href="/Message/Inbox" class="btn btn-light rounded-3 px-3" title="Yenile">
+                    <i class="bx bx-refresh me-1"></i> Yenile
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="mail-list" id="inboxList">
+        @if (Model != null && Model.Count > 0)
+        {
+            foreach (var item in Model)
+            {
+                var isUnread = item.IsStatus == false;
+                var rowClass = isUnread ? "mail-unread" : "";
+                var preview = item.MessageDetail ?? "";
+                if (preview.Length > 110) { preview = preview.Substring(0, 110) + "..."; }
+
+                var senderText = !string.IsNullOrWhiteSpace(item.SenderEmail) ? item.SenderEmail.Trim() : "?";
+                var avatarLetter = senderText.Substring(0, 1).ToUpper();
+
+                <div class="mail-item @rowClass"
+                     data-href="/Message/MessageDetail/@item.MessageId">
+
+                    <div class="mail-left">
+                        <div class="mail-avatar">@avatarLetter</div>
+
+                        <div class="mail-content">
+                            <div class="mail-topline">
+                                <div class="mail-from">@item.SenderEmail</div>
+                                <div class="mail-to">→ @item.ReceiverEmail</div>
+                            </div>
+
+                            <div class="mail-subject">@item.Subject</div>
+                            <div class="mail-preview">@preview</div>
+                        </div>
+                    </div>
+
+                    <div class="mail-right">
+                        <div class="mail-date">
+                            @item.SendDate.ToString("dd MMM yyyy HH:mm")
+                        </div>
+
+                        <div class="mail-actions">
+
+                            <form asp-controller="Message" asp-action="ToggleStar" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@item.MessageId" />
+                                <button type="submit"
+                                        class="btn btn-sm btn-icon @(item.IsStarred ? "btn-warning" : "btn-outline-warning")"
+                                        title="Yıldızla"
+                                        onclick="event.stopPropagation();">
+                                    <i class="bx @(item.IsStarred ? "bxs-star" : "bx-star")"></i>
+                                </button>
+                            </form>
+
+                            <a class="btn btn-sm btn-icon btn-outline-primary"
+                               href="/Message/MessageDetail/@item.MessageId"
+                               title="Aç"
+                               onclick="event.stopPropagation();">
+                                <i class="bx bx-show"></i>
+                            </a>
+
+                            <form asp-controller="Message" asp-action="MoveToSpam" method="post" class="d-inline"
+                                  onsubmit="event.stopPropagation(); return confirm('Bu mesajı spam olarak işaretlemek istiyor musun?');">
+                                <input type="hidden" name="id" value="@item.MessageId" />
+                                <button type="submit" class="btn btn-sm btn-icon btn-outline-secondary" title="Spam">
+                                    <i class="bx bx-shield-quarter"></i>
+                                </button>
+                            </form>
+
+                            <a class="btn btn-sm btn-icon btn-outline-danger"
+                               href="/Message/DeleteMessage/@item.MessageId"
+                               title="Çöp"
+                               onclick="event.stopPropagation(); return confirm('Bu mesajı çöp kutusuna taşımak istiyor musun?');">
+                                <i class="bx bx-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="bx bx-inbox"></i>
+                <div>Gelen kutusu boş.</div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const input = document.getElementById("inboxSearch");
+        const mailList = document.getElementById("inboxList");
+
+        if (input && mailList) {
+            input.addEventListener("input", function () {
+                const q = this.value.toLowerCase().trim();
+                const rows = mailList.querySelectorAll(".mail-item");
+
+                rows.forEach(r => {
+                    const text = r.innerText.toLowerCase();
+                    r.style.display = text.includes(q) ? "" : "none";
+                });
+            });
+        }
+
+        document.querySelectorAll(".mail-item").forEach(row => {
+            row.addEventListener("click", function () {
+                const href = this.getAttribute("data-href");
+                if (href) window.location.href = href;
+            });
+        });
+    </script>
+}

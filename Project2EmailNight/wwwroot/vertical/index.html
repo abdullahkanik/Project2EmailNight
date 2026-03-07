@@ -1,0 +1,469 @@
+@{
+    Layout = "~/Views/Shared/_EmailLayout.cshtml";
+    ViewData["Title"] = "Dashboard";
+}
+
+<style>
+	.dashboard-card {
+		border: none;
+		border-radius: 18px;
+		color: #fff;
+		overflow: hidden;
+		box-shadow: 0 10px 25px rgba(0,0,0,.08);
+		transition: .25s ease;
+	}
+
+		.dashboard-card:hover {
+			transform: translateY(-4px);
+		}
+
+		.dashboard-card .card-body {
+			padding: 22px;
+		}
+
+	.dashboard-icon {
+		width: 52px;
+		height: 52px;
+		border-radius: 14px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 24px;
+		background: rgba(255,255,255,.18);
+	}
+
+	.stat-number {
+		font-size: 34px;
+		font-weight: 700;
+		line-height: 1;
+		margin-bottom: 8px;
+	}
+
+	.stat-title {
+		font-size: 15px;
+		opacity: .95;
+	}
+
+	.stat-change {
+		font-size: 14px;
+		font-weight: 600;
+	}
+
+	.gradient-purple {
+		background: linear-gradient(135deg, #7b2ff7, #9b59ff);
+	}
+
+	.gradient-blue {
+		background: linear-gradient(135deg, #2f80ed, #56ccf2);
+	}
+
+	.gradient-pink {
+		background: linear-gradient(135deg, #ff0080, #ff4d94);
+	}
+
+	.gradient-orange {
+		background: linear-gradient(135deg, #ff8a00, #ffb347);
+	}
+
+	.gradient-red {
+		background: linear-gradient(135deg, #ef4444, #f87171);
+	}
+
+	.gradient-green {
+		background: linear-gradient(135deg, #10b981, #34d399);
+	}
+
+	.dashboard-panel {
+		border: none;
+		border-radius: 20px;
+		box-shadow: 0 10px 30px rgba(31,41,55,.06);
+		overflow: hidden;
+	}
+
+		.dashboard-panel .card-header {
+			background: #fff;
+			border-bottom: 1px solid #f1f3f7;
+			padding: 18px 22px;
+		}
+
+		.dashboard-panel .card-body {
+			padding: 22px;
+		}
+
+	.mail-mini-list .mail-item {
+		display: flex;
+		justify-content: space-between;
+		align-items: start;
+		gap: 16px;
+		padding: 14px 0;
+		border-bottom: 1px solid #f1f3f7;
+	}
+
+		.mail-mini-list .mail-item:last-child {
+			border-bottom: none;
+		}
+
+	.mail-sender {
+		font-weight: 600;
+		color: #1f2937;
+		margin-bottom: 4px;
+	}
+
+	.mail-subject {
+		font-weight: 600;
+		color: #374151;
+		margin-bottom: 4px;
+	}
+
+	.mail-preview {
+		color: #6b7280;
+		font-size: 13px;
+		max-width: 100%;
+	}
+
+	.mail-date {
+		color: #9ca3af;
+		font-size: 13px;
+		white-space: nowrap;
+	}
+
+	.progress-thin {
+		height: 8px;
+		border-radius: 999px;
+	}
+
+	.info-box {
+		background: #faf8ff;
+		border: 1px solid #eee7ff;
+		border-radius: 16px;
+		padding: 18px;
+	}
+
+		.info-box .title {
+			font-size: 14px;
+			color: #6b7280;
+			margin-bottom: 6px;
+		}
+
+		.info-box .value {
+			font-size: 28px;
+			font-weight: 700;
+			color: #6d28d9;
+		}
+</style>
+
+<div class="container-fluid">
+
+	<div class="mb-4">
+		<h4 class="fw-bold mb-1">Mail Dashboard</h4>
+		<p class="text-muted mb-0">Mesaj trafiği, klasör durumları ve son aktiviteler</p>
+	</div>
+
+	<div class="row g-3 mb-4">
+		<div class="col-12 col-md-6 col-xl-3">
+			<div class="card dashboard-card gradient-purple">
+				<div class="card-body d-flex justify-content-between align-items-start">
+					<div>
+						<div class="stat-number">@ViewBag.TotalMessageCount</div>
+						<div class="stat-title">Toplam Mesaj</div>
+						<div class="stat-change mt-2">+%@ViewBag.MessageGrowth bu ay</div>
+					</div>
+					<div class="dashboard-icon">
+						<i class="bx bx-envelope"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-md-6 col-xl-3">
+			<div class="card dashboard-card gradient-blue">
+				<div class="card-body d-flex justify-content-between align-items-start">
+					<div>
+						<div class="stat-number">@ViewBag.UnreadMessageCount</div>
+						<div class="stat-title">Okunmamış</div>
+						<div class="stat-change mt-2">Kontrol bekleyen mesajlar</div>
+					</div>
+					<div class="dashboard-icon">
+						<i class="bx bx-envelope-open"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-md-6 col-xl-3">
+			<div class="card dashboard-card gradient-pink">
+				<div class="card-body d-flex justify-content-between align-items-start">
+					<div>
+						<div class="stat-number">@ViewBag.StarredCount</div>
+						<div class="stat-title">Yıldızlı Mesaj</div>
+						<div class="stat-change mt-2">Önemli olarak işaretlenenler</div>
+					</div>
+					<div class="dashboard-icon">
+						<i class="bx bxs-star"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-md-6 col-xl-3">
+			<div class="card dashboard-card gradient-orange">
+				<div class="card-body d-flex justify-content-between align-items-start">
+					<div>
+						<div class="stat-number">@ViewBag.SentMessageCount</div>
+						<div class="stat-title">Gönderilenler</div>
+						<div class="stat-change mt-2">Son 30 günlük hareket</div>
+					</div>
+					<div class="dashboard-icon">
+						<i class="bx bx-send"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row g-3 mb-4">
+		<div class="col-12 col-md-4">
+			<div class="card dashboard-card gradient-red">
+				<div class="card-body d-flex justify-content-between align-items-start">
+					<div>
+						<div class="stat-number">@ViewBag.SpamCount</div>
+						<div class="stat-title">Spam</div>
+						<div class="stat-change mt-2">Filtrelenen şüpheli mesajlar</div>
+					</div>
+					<div class="dashboard-icon">
+						<i class="bx bx-shield-quarter"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-md-4">
+			<div class="card dashboard-card gradient-green">
+				<div class="card-body d-flex justify-content-between align-items-start">
+					<div>
+						<div class="stat-number">@ViewBag.TodayInboxCount</div>
+						<div class="stat-title">Bugün Gelen</div>
+						<div class="stat-change mt-2">Bugünkü gelen kutusu hareketi</div>
+					</div>
+					<div class="dashboard-icon">
+						<i class="bx bx-calendar"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-md-4">
+			<div class="card dashboard-card gradient-purple">
+				<div class="card-body d-flex justify-content-between align-items-start">
+					<div>
+						<div class="stat-number">@ViewBag.TrashCount</div>
+						<div class="stat-title">Çöp Kutusu</div>
+						<div class="stat-change mt-2">Silinmiş mesaj sayısı</div>
+					</div>
+					<div class="dashboard-icon">
+						<i class="bx bx-trash"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row g-3">
+		<div class="col-12 col-xl-8">
+			<div class="card dashboard-panel">
+				<div class="card-header d-flex justify-content-between align-items-center">
+					<h5 class="mb-0">Mail Trafik Özeti</h5>
+					<span class="text-muted small">Son 7 gün</span>
+				</div>
+				<div class="card-body">
+					<div id="mailTrafficChart" style="min-height: 340px;"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-xl-4">
+			<div class="card dashboard-panel">
+				<div class="card-header">
+					<h5 class="mb-0">Klasör Dağılımı</h5>
+				</div>
+				<div class="card-body">
+					<div id="mailFolderChart" style="min-height: 280px;"></div>
+
+					<div class="mt-4">
+						<div class="mb-3">
+							<div class="d-flex justify-content-between mb-1">
+								<span>Gelen Kutusu</span>
+								<span>@ViewBag.InboxRate%</span>
+							</div>
+							<div class="progress progress-thin">
+								<div class="progress-bar bg-primary" style="width:@ViewBag.InboxRate%"></div>
+							</div>
+						</div>
+
+						<div class="mb-3">
+							<div class="d-flex justify-content-between mb-1">
+								<span>Yıldızlı</span>
+								<span>@ViewBag.StarRate%</span>
+							</div>
+							<div class="progress progress-thin">
+								<div class="progress-bar bg-warning" style="width:@ViewBag.StarRate%"></div>
+							</div>
+						</div>
+
+						<div class="mb-3">
+							<div class="d-flex justify-content-between mb-1">
+								<span>Spam</span>
+								<span>@ViewBag.SpamRate%</span>
+							</div>
+							<div class="progress progress-thin">
+								<div class="progress-bar bg-danger" style="width:@ViewBag.SpamRate%"></div>
+							</div>
+						</div>
+
+						<div>
+							<div class="d-flex justify-content-between mb-1">
+								<span>Çöp</span>
+								<span>@ViewBag.TrashRate%</span>
+							</div>
+							<div class="progress progress-thin">
+								<div class="progress-bar bg-secondary" style="width:@ViewBag.TrashRate%"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-xl-7">
+			<div class="card dashboard-panel mt-3">
+				<div class="card-header d-flex justify-content-between align-items-center">
+					<h5 class="mb-0">Son Gelen Mesajlar</h5>
+					<a href="/Message/Inbox" class="btn btn-sm btn-light">Tümünü Gör</a>
+				</div>
+				<div class="card-body">
+					<div class="mail-mini-list">
+						@if (ViewBag.LastMessages != null)
+						{
+						foreach (var item in ViewBag.LastMessages)
+						{
+						<div class="mail-item">
+							<div>
+								<div class="mail-sender">@item.SenderEmail</div>
+								<div class="mail-subject">@item.Subject</div>
+								<div class="mail-preview">@item.MessageDetail</div>
+							</div>
+							<div class="mail-date">@item.SendDate.ToString("dd.MM.yyyy HH:mm")</div>
+						</div>
+						}
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-xl-5">
+			<div class="card dashboard-panel mt-3">
+				<div class="card-header">
+					<h5 class="mb-0">Hızlı Bilgiler</h5>
+				</div>
+				<div class="card-body">
+					<div class="row g-3">
+						<div class="col-6">
+							<div class="info-box">
+								<div class="title">En Son Mail</div>
+								<div class="value">@ViewBag.LastMailHour</div>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="info-box">
+								<div class="title">Bu Hafta</div>
+								<div class="value">@ViewBag.ThisWeekCount</div>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="info-box">
+								<div class="title">Taslaklar</div>
+								<div class="value">@ViewBag.DraftCount</div>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="info-box">
+								<div class="title">Aktif Kullanıcı</div>
+								<div class="value">1</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+@section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+	var trafficOptions = {
+		series: [
+			{
+				name: 'Gelen',
+				data: [12, 18, 9, 21, 16, 25, 19]
+			},
+			{
+				name: 'Gönderilen',
+				data: [5, 8, 6, 10, 7, 12, 9]
+			}
+		],
+		chart: {
+			type: 'area',
+			height: 340,
+			toolbar: { show: false }
+		},
+		colors: ['#7b2ff7', '#ff0080'],
+		stroke: {
+			curve: 'smooth',
+			width: 3
+		},
+		fill: {
+			type: 'gradient',
+			gradient: {
+				shadeIntensity: 1,
+				opacityFrom: 0.35,
+				opacityTo: 0.08
+			}
+		},
+		dataLabels: {
+			enabled: false
+		},
+		xaxis: {
+			categories: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cts', 'Paz']
+		},
+		grid: {
+			borderColor: '#eef2f7'
+		},
+		legend: {
+			position: 'top'
+		}
+	};
+
+	new ApexCharts(document.querySelector("#mailTrafficChart"), trafficOptions).render();
+
+	var folderOptions = {
+		series: [@ViewBag.InboxCount, @ViewBag.StarredCount, @ViewBag.SpamCount, @ViewBag.TrashCount],
+		chart: {
+			type: 'donut',
+			height: 280
+		},
+		labels: ['Gelen Kutusu', 'Yıldızlı', 'Spam', 'Çöp'],
+		colors: ['#2f80ed', '#f59e0b', '#ef4444', '#6b7280'],
+		dataLabels: {
+			enabled: true
+		},
+		legend: {
+			position: 'bottom'
+		}
+	};
+
+	new ApexCharts(document.querySelector("#mailFolderChart"), folderOptions).render();
+</script>
+}

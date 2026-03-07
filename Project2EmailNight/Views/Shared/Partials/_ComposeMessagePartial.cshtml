@@ -1,0 +1,24 @@
+﻿@model Project2EmailNight.Entities.Message
+
+<form id="composeForm" method="post" action="/Message/CreateMessage">
+    <div id="composeError" class="alert alert-danger d-none mb-2"></div>
+
+    <div class="mb-2">
+        <input class="form-control" name="ReceiverEmail" placeholder="Kime" required />
+    </div>
+
+    <div class="mb-2">
+        <input class="form-control" name="Subject" placeholder="Konu" required />
+    </div>
+
+    <!-- Quill editor -->
+    <div id="composeEditor"></div>
+
+    <!-- Quill HTML -> MessageDetail -->
+    <input type="hidden" id="composeEditorHtml" name="MessageDetail" />
+
+    <div class="d-flex justify-content-end gap-2 mt-3">
+        <button type="button" class="btn btn-light" id="composeCloseBtn">Kapat</button>
+        <button type="submit" class="btn btn-primary">Gönder</button>
+    </div>
+</form>

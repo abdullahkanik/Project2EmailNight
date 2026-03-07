@@ -1,0 +1,132 @@
+﻿@model List<Project2EmailNight.Entities.Message>
+@{
+    Layout = "~/Views/Shared/_EmailLayout.cshtml";
+    ViewData["Title"] = "Gönderilenler";
+}
+
+<div class="card radius-10">
+    <div class="card-body">
+
+        <!-- Başlık -->
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div>
+                <h5 class="mb-0">Gönderilenler</h5>
+                <small class="text-muted">@((Model?.Count) ?? 0) mesaj</small>
+            </div>
+        </div>
+
+        <hr class="my-3" />
+
+        <!-- Arama + Yenile -->
+        <div class="row g-2 align-items-center">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="position-relative">
+                    <input id="sentSearch" type="text" class="form-control ps-5" placeholder="Alıcı / konu ara...">
+                    <span class="position-absolute top-50 translate-middle-y ms-3 text-muted">
+                        <i class="bx bx-search"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-8 text-md-end">
+                <a href="/Message/Sent" class="btn btn-light" title="Yenile">
+                    <i class="bx bx-refresh"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Tablo -->
+        <div class="table-responsive mt-3">
+            <table class="table align-middle mb-0" id="sentTable">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width:60px">#</th>
+                        <th>Alıcı</th>
+                        <th>Konu</th>
+                        <th style="width:180px">Tarih</th>
+                        <th style="width:140px" class="text-end">İşlem</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="fw-bold">@item.MessageId</td>
+
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="avatar-sm bg-light rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bx bxs-user text-muted"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-semibold">@item.ReceiverEmail</div>
+                                            <small class="text-muted">from: @item.SenderEmail</small>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="fw-semibold">@item.Subject</div>
+                                    <small class="text-muted">Mesaj detayı için aç</small>
+                                </td>
+
+                                <td class="text-muted">
+                                    @item.SendDate.ToString("dd MMM yyyy HH:mm")
+                                </td>
+
+                                <td class="text-end">
+                                    <a class="btn btn-sm btn-outline-primary"
+                                       href="/Message/MessageDetail/@item.MessageId"
+                                       title="Aç">
+                                        <i class="bx bx-show"></i>
+                                    </a>
+
+                                    <a class="btn btn-sm btn-outline-danger"
+                                       href="/Message/DeleteMessage/@item.MessageId"
+                                       title="Sil"
+                                       onclick="return confirm('Bu mesajı silmek istediğine emin misin?');">
+                                        <i class="bx bx-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5">
+                                <div class="text-center text-muted py-5">
+                                    <i class="bx bxs-send fs-1"></i>
+                                    <div class="mt-2">Gönderilen mesaj yok.</div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const input = document.getElementById("sentSearch");
+        const table = document.getElementById("sentTable");
+
+        if (input && table) {
+            input.addEventListener("input", function () {
+                const q = this.value.toLowerCase().trim();
+                const rows = table.querySelectorAll("tbody tr");
+
+                rows.forEach(r => {
+                    const text = r.innerText.toLowerCase();
+                    r.style.display = text.includes(q) ? "" : "none";
+                });
+            });
+        }
+    </script>
+}

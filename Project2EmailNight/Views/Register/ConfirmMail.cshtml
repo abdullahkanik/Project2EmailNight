@@ -1,0 +1,32 @@
+﻿@model Project2EmailNight.Dtos.ConfirmMailDto
+@{
+    Layout = null;
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container mt-5" style="max-width:500px;">
+    <h3>Email Doğrulama</h3>
+    <p class="text-muted">Mailine gelen 6 haneli kodu gir.</p>
+
+    <form method="post">
+        <div class="mb-3">
+            <label>Email</label>
+            <input class="form-control" asp-for="Email" readonly />
+        </div>
+
+        <div class="mb-3">
+            <label>Onay Kodu</label>
+            <input class="form-control" asp-for="ConfirmCode" />
+            <span class="text-danger" asp-validation-for="ConfirmCode"></span>
+        </div>
+
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+        <button class="btn btn-primary w-100">Doğrula</button>
+    </form>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</div>

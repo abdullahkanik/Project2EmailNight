@@ -1,0 +1,59 @@
+﻿@model Project2EmailNight.Entities.Message
+@{
+    ViewData["Title"] = "Mesaj Detayı";
+    Layout = "~/Views/Shared/_EmailLayout.cshtml";
+}
+
+<div class="container mt-5" style="max-width:900px;">
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <h4 class="mb-3">@Model?.Subject</h4>
+
+            <div class="mb-2 text-muted">
+                <strong>Gönderen:</strong> @Model?.SenderEmail <br />
+                <strong>Alıcı:</strong> @Model?.ReceiverEmail <br />
+                <strong>Tarih:</strong> @(Model != null ? Model.SendDate.ToString("dd MMM yyyy HH:mm") : "-")
+            </div>
+
+            <hr />
+
+            <!-- MESAJ İÇERİĞİ -->
+            <div style="min-height:150px;">
+                @if (Model != null && !string.IsNullOrWhiteSpace(Model.MessageDetail))
+                {
+                    @Html.Raw(Model.MessageDetail)
+                }
+                else
+                {
+                    <span class="text-muted">Mesaj içeriği boş.</span>
+                }
+            </div>
+
+            <hr />
+
+            <!-- BUTONLAR -->
+            <div class="d-flex justify-content-between">
+                <a href="/Message/Inbox" class="btn btn-secondary">
+                    ← Inbox'a Dön
+                </a>
+
+                <div class="d-flex gap-2">
+                    <a href="/Message/CreateMessage?receiver=@(Model?.SenderEmail)"
+                       class="btn btn-primary">
+                        Cevapla
+                    </a>
+
+                    <a href="/Message/DeleteMessage/@(Model?.MessageId)"
+                       class="btn btn-danger"
+                       onclick="return confirm('Bu mesajı silmek istediğinize emin misiniz?');">
+                        Sil
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

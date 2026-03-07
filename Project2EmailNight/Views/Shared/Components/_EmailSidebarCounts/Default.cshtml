@@ -1,0 +1,197 @@
+﻿@model Project2EmailNight.Models.EmailSidebarCountsVm
+@{
+    string path = Context.Request.Path.Value?.ToLower() ?? "";
+    bool isActive(string urlPart) => path.Contains(urlPart);
+}
+
+<style>
+    .email-nav-title {
+        font-size: 12px;
+        font-weight: 800;
+        color: #94a3b8;
+        letter-spacing: .05em;
+        margin: 16px 16px 8px 16px;
+        text-transform: uppercase;
+    }
+
+    .email-nav-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 16px;
+        border-radius: 10px;
+        margin: 2px 10px;
+        color: #334155;
+        text-decoration: none;
+        transition: .15s;
+    }
+
+        .email-nav-item:hover {
+            background: rgba(109,40,217,.06);
+        }
+
+        .email-nav-item.active {
+            background: rgba(109,40,217,.10);
+            border: 1px solid rgba(109,40,217,.18);
+            color: #6d28d9;
+        }
+
+    .email-nav-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+    }
+
+    .email-badge {
+        min-width: 28px;
+        height: 22px;
+        padding: 0 8px;
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 800;
+        color: #fff;
+    }
+
+    .b-purple {
+        background: #6d28d9;
+    }
+
+    .b-orange {
+        background: #f59e0b;
+    }
+
+    .b-red {
+        background: #ef4444;
+    }
+
+    .b-blue {
+        background: #3b82f6;
+    }
+
+    .b-pink {
+        background: #ec4899;
+    }
+
+    .b-gray {
+        background: #64748b;
+    }
+
+    .btn-compose-mail {
+        margin: 12px 16px 8px 16px;
+        border-radius: 10px;
+        background: #6d28d9;
+        color: #fff;
+        font-weight: 800;
+        padding: 10px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-decoration: none;
+        box-shadow: 0 10px 18px rgba(109,40,217,.18);
+    }
+
+        .btn-compose-mail:hover {
+            color: #fff;
+            filter: brightness(.98);
+        }
+</style>
+
+<div class="sidebar-wrapper" data-simplebar="true">
+    <div class="sidebar-header">
+        <div>
+            <img src="/vertical/assets/images/logo-icon.png" class="logo-icon-2" alt="" />
+        </div>
+        <div>
+            <h4 class="logo-text">Email Project</h4>
+        </div>
+        <a href="javascript:;" class="toggle-btn ms-auto">
+            <i class="bx bx-menu"></i>
+        </a>
+    </div>
+
+    <!-- Compose -->
+    <a href="javascript:;" class="btn-compose-mail" id="btnOpenCompose">
+        <i class="bx bx-plus"></i>
+        Yeni İleti
+    </a>
+
+    <div class="email-navigation">
+        <div class="email-nav-title">Mail Kutusu</div>
+
+        <a href="/Message/Inbox" class="email-nav-item @(isActive("/message/inbox") ? "active" : "")">
+            <span class="email-nav-left">
+                <i class='bx bxs-inbox font-20'></i>
+                <span>Gelen Kutusu</span>
+            </span>
+            <!-- Gmail gibi: okunmamış -->
+            <span class="email-badge b-purple">@Model.InboxUnread</span>
+        </a>
+
+        <a href="#" class="email-nav-item">
+            <span class="email-nav-left">
+                <i class='bx bxs-star font-20' style="color:#f59e0b"></i>
+                <span>Yıldızlı</span>
+            </span>
+            <span class="email-badge b-orange">@Model.StarCount</span>
+        </a>
+
+        <a href="#" class="email-nav-item">
+            <span class="email-nav-left">
+                <i class='bx bxs-trash font-20' style="color:#ef4444"></i>
+                <span>Çöp Kutusu</span>
+            </span>
+            <span class="email-badge b-red">@Model.TrashCount</span>
+        </a>
+
+        <a href="#" class="email-nav-item">
+            <span class="email-nav-left">
+                <i class='bx bxs-file font-20'></i>
+                <span>Taslaklar</span>
+            </span>
+            <span class="email-badge b-gray">@Model.DraftCount</span>
+        </a>
+
+        <a href="/Message/Sent" class="email-nav-item @(isActive("/message/sent") ? "active" : "")">
+            <span class="email-nav-left">
+                <i class='bx bxs-send font-20'></i>
+                <span>Gönderilenler</span>
+            </span>
+            <span class="email-badge b-blue">@Model.SentTotal</span>
+        </a>
+
+        <a href="#" class="email-nav-item">
+            <span class="email-nav-left">
+                <i class='bx bxs-error font-20' style="color:#ec4899"></i>
+                <span>Spam</span>
+            </span>
+            <span class="email-badge b-pink">@Model.SpamCount</span>
+        </a>
+
+        <div class="email-nav-title">Kategoriler</div>
+
+        <a href="#" class="email-nav-item">
+            <span class="email-nav-left"><i class='bx bxs-book font-20'></i><span>Eğitim</span></span>
+            <span class="email-badge b-purple">@Model.CatEdu</span>
+        </a>
+
+        <a href="#" class="email-nav-item">
+            <span class="email-nav-left"><i class='bx bxs-briefcase font-20'></i><span>Proje</span></span>
+            <span class="email-badge b-orange">@Model.CatProje</span>
+        </a>
+
+        <a href="#" class="email-nav-item">
+            <span class="email-nav-left"><i class='bx bxs-buildings font-20'></i><span>İş</span></span>
+            <span class="email-badge b-blue">@Model.CatIs</span>
+        </a>
+
+        <a href="#" class="email-nav-item">
+            <span class="email-nav-left"><i class='bx bxs-right-arrow-square font-20'></i><span>Diğer</span></span>
+            <span class="email-badge b-gray">@Model.CatDiger</span>
+        </a>
+    </div>
+</div>

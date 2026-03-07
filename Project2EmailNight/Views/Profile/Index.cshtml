@@ -1,0 +1,581 @@
+﻿@model Project2EmailNight.Dtos.UserEditDto
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--breadcrumb-->
+<div class="page-breadcrumb d-none d-md-flex align-items-center mb-3">
+    <div class="breadcrumb-title pe-3">Profilim</div>
+    <div class="ps-3">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 p-0">
+                <li class="breadcrumb-item">
+                    <a href="javascript:;"><i class='bx bx-home-alt'></i></a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Profilimi Düzenle</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!--end breadcrumb-->
+
+<div class="container-fluid">
+    <form method="post" enctype="multipart/form-data">
+        <div class="row g-3">
+            <!-- SOL TARAF - Profil Kartı -->
+            <div class="col-12 col-lg-4">
+                <div class="card profile-card h-100">
+                    <div class="card-body text-center p-4">
+                        <!-- Profil Resmi -->
+                        <div class="profile-image-section mb-4">
+                            <div class="profile-image-wrapper position-relative d-inline-block" onclick="document.getElementById('imageUpload').click()">
+                                <img src="~/images/@Model.ImageUrl" class="profile-img shadow-lg" alt="Profil Resmi" id="profileImagePreview" />
+                                <div class="profile-image-overlay">
+                                    <i class='bx bx-camera'></i>
+                                    <p class="mb-0 mt-1 small">Fotoğraf Değiştir</p>
+                                </div>
+                            </div>
+                            <input type="file" id="imageUpload" asp-for="Image" class="d-none" accept="image/*" onchange="previewImage(event)" />
+                        </div>
+
+                        <!-- Kullanıcı Bilgileri -->
+                        <div class="user-info mb-4">
+                            <h5 class="mb-1 fw-bold">@Model.Name @Model.Surname</h5>
+                            <p class="text-muted mb-0 small"><i class='bx bx-envelope me-1'></i>@Model.Email</p>
+                        </div>
+
+                        <hr class="my-3">
+
+                        <!-- Profil İstatistikleri -->
+                        <div class="profile-stats">
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <div class="stat-item">
+                                        <i class='bx bx-calendar text-primary fs-5'></i>
+                                        <p class="mb-0 small text-muted mt-1">Üyelik Tarihi</p>
+                                        <h6 class="mb-0 small">Ocak 2024</h6>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="stat-item">
+                                        <i class='bx bx-shield-alt-2 text-success fs-5'></i>
+                                        <p class="mb-0 small text-muted mt-1">Hesap Durumu</p>
+                                        <h6 class="mb-0 small">Aktif</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-3">
+
+                        <!-- Hızlı Linkler -->
+                        <div class="quick-links text-start">
+                            <h6 class="mb-2 small"><i class='bx bx-link me-2'></i>Hızlı Erişim</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-1">
+                                    <a href="/Dashboard/Index" class="text-decoration-none text-muted small">
+                                        <i class='bx bx-home-alt me-2'></i>Dashboard
+                                    </a>
+                                </li>
+                                <li class="mb-1">
+                                    <a href="/Message/Inbox" class="text-decoration-none text-muted small">
+                                        <i class='bx bxs-inbox me-2'></i>Mailbox
+                                    </a>
+                                </li>
+                                <li class="mb-1">
+                                    <a href="#" class="text-decoration-none text-muted small">
+                                        <i class='bx bx-cog me-2'></i>Ayarlar
+                                    </a>
+                                </li>
+                                <li class="mb-1">
+                                    <a href="#" class="text-decoration-none text-muted small">
+                                        <i class='bx bx-bell me-2'></i>Bildirimler
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SAĞ TARAF - Düzenleme Formu -->
+            <div class="col-12 col-lg-8">
+                <div class="card h-100">
+                    <div class="card-body p-4">
+                        <div class="form-header mb-4">
+                            <h6 class="mb-1"><i class='bx bx-edit me-2'></i>Profil Bilgilerini Düzenle</h6>
+                            <p class="text-muted mb-0 small">Kişisel bilgilerinizi güncelleyebilirsiniz</p>
+                        </div>
+
+                        <div class="row g-3">
+                            <!-- Kişisel Bilgiler Bölümü -->
+                            <div class="col-12">
+                                <div class="section-title mb-2">
+                                    <h6 class="text-uppercase text-muted small mb-0">
+                                        <i class='bx bx-user me-2'></i>Kişisel Bilgiler
+                                    </h6>
+                                </div>
+                            </div>
+
+                            <!-- Ad -->
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-semibold">Ad <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class='bx bx-user'></i>
+                                    </span>
+                                    <input type="text" class="form-control" asp-for="Name" placeholder="Adınızı girin" />
+                                </div>
+                                <span asp-validation-for="Name" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Soyad -->
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-semibold">Soyad <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class='bx bx-user'></i>
+                                    </span>
+                                    <input type="text" class="form-control" asp-for="Surname" placeholder="Soyadınızı girin" />
+                                </div>
+                                <span asp-validation-for="Surname" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">E-posta Adresi <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class='bx bx-envelope'></i>
+                                    </span>
+                                    <input type="email" class="form-control" asp-for="Email" placeholder="E-posta adresinizi girin" />
+                                </div>
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Şifre Bölümü -->
+                            <div class="col-12">
+                                <hr class="my-2">
+                                <div class="section-title mb-2">
+                                    <h6 class="text-uppercase text-muted small mb-0">
+                                        <i class='bx bx-lock-alt me-2'></i>Güvenlik
+                                    </h6>
+                                </div>
+                                <div class="alert alert-info d-flex align-items-center py-2" role="alert">
+                                    <i class='bx bx-info-circle fs-6 me-2'></i>
+                                    <div class="small">
+                                        Şifrenizi değiştirmek istemiyorsanız aşağıdaki alanları boş bırakın
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Yeni Şifre -->
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-semibold">Yeni Şifre</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class='bx bx-lock'></i>
+                                    </span>
+                                    <input type="password" class="form-control" asp-for="Password" placeholder="Yeni şifrenizi girin" id="Password" />
+                                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('Password')">
+                                        <i class='bx bx-show' id="Password-icon"></i>
+                                    </button>
+                                </div>
+                                <span asp-validation-for="Password" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Şifre Tekrar -->
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-semibold">Şifre Tekrar</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class='bx bx-lock'></i>
+                                    </span>
+                                    <input type="password" class="form-control" asp-for="ConfirmPassword" placeholder="Şifrenizi tekrar girin" id="ConfirmPassword" />
+                                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('ConfirmPassword')">
+                                        <i class='bx bx-show' id="ConfirmPassword-icon"></i>
+                                    </button>
+                                </div>
+                                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Hidden Fields -->
+                            <input type="hidden" asp-for="ImageUrl" />
+                            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                            <!-- Butonlar -->
+                            <div class="col-12">
+                                <hr class="my-3">
+                                <div class="d-flex gap-2 justify-content-end">
+                                    <a href="/Dashboard/Index" class="btn btn-light px-3">
+                                        <i class='bx bx-x me-1'></i>İptal
+                                    </a>
+                                    <button type="submit" class="btn btn-primary px-4">
+                                        <i class='bx bx-save me-1'></i>Değişiklikleri Kaydet
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Profil resmi önizleme
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('profileImagePreview').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Şifre göster/gizle
+        function togglePassword(fieldName) {
+            const input = document.getElementById(fieldName);
+            const icon = document.getElementById(fieldName + '-icon');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bx-show');
+                icon.classList.add('bx-hide');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bx-hide');
+                icon.classList.add('bx-show');
+            }
+        }
+
+        // Form submission başarılı mesajı
+        @if (TempData["SuccessMessage"] != null)
+        {
+                    <text>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Başarılı!',
+                        text: '@TempData["SuccessMessage"]',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    </text>
+        }
+
+        // Form submission hata mesajı
+        @if (TempData["ErrorMessage"] != null)
+        {
+                    <text>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hata!',
+                        text: '@TempData["ErrorMessage"]',
+                        confirmButtonText: 'Tamam'
+                    });
+                    </text>
+        }
+    </script>
+
+    <style>
+        /* Genel Sayfa Stilleri */
+        body {
+            background: #f5f7fa;
+        }
+
+        /* Profil Kartı */
+        .profile-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+            background: white;
+        }
+
+            .profile-card .card-body {
+                position: relative;
+            }
+
+        /* Profil Resmi */
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .profile-image-wrapper {
+            cursor: pointer;
+            position: relative;
+        }
+
+            .profile-image-wrapper:hover .profile-img {
+                transform: scale(1.05);
+                border-color: #764ba2;
+            }
+
+        .profile-image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .profile-image-wrapper:hover .profile-image-overlay {
+            opacity: 1;
+        }
+
+        .profile-image-overlay i {
+            font-size: 28px;
+            color: white;
+        }
+
+        .profile-image-overlay p {
+            color: white;
+            font-weight: 500;
+        }
+
+        /* Kullanıcı Bilgileri */
+        .user-info h5 {
+            color: #2d3748;
+            font-size: 1.2rem;
+        }
+
+        .user-info p {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        /* İstatistikler */
+        .stat-item {
+            padding: 12px;
+            background: #f7fafc;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border: 2px solid #e2e8f0;
+        }
+
+            .stat-item:hover {
+                background: #edf2f7;
+                transform: translateY(-2px);
+                border-color: #667eea;
+            }
+
+            .stat-item i {
+                color: #667eea;
+            }
+
+            .stat-item p {
+                color: #718096;
+            }
+
+            .stat-item h6 {
+                color: #2d3748;
+                font-weight: 600;
+            }
+
+        /* Hızlı Linkler */
+        .quick-links h6 {
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .quick-links a {
+            color: #4a5568 !important;
+            transition: all 0.3s ease;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+            .quick-links a:hover {
+                background: #f7fafc;
+                color: #667eea !important;
+                padding-left: 18px;
+            }
+
+            .quick-links a i {
+                opacity: 0.8;
+            }
+
+        /* Profil Kartı HR */
+        .profile-card hr {
+            border-color: #e2e8f0;
+            opacity: 1;
+        }
+
+        /* Form Kartı */
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Form Header */
+        .form-header h6 {
+            color: #2d3748;
+            font-weight: 700;
+        }
+
+        .form-header p {
+            font-size: 0.85rem;
+        }
+
+        /* Section Titles */
+        .section-title h6 {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            font-size: 0.75rem;
+        }
+
+        /* Input Stilleri */
+        .form-label {
+            color: #4a5568;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-group-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            border-radius: 8px 0 0 8px;
+            width: 40px;
+            justify-content: center;
+        }
+
+        .form-control {
+            border: 2px solid #e2e8f0;
+            border-radius: 0 8px 8px 0;
+            padding: 0.6rem 0.85rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+            .form-control:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 0.15rem rgba(102, 126, 234, 0.15);
+                background: #f8f9ff;
+            }
+
+        .input-group:has(.form-control:focus) .input-group-text {
+            box-shadow: 0 0 0 0.15rem rgba(102, 126, 234, 0.15);
+        }
+
+        /* Alert Stilleri */
+        .alert-info {
+            background: #e6f2ff;
+            border: 2px solid #b3d9ff;
+            color: #0066cc;
+            border-radius: 10px;
+        }
+
+        /* Button Stilleri */
+        .btn {
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 0.9rem;
+            padding: 0.6rem 1.2rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 3px 12px rgba(102, 126, 234, 0.3);
+        }
+
+            .btn-primary:hover {
+                background: linear-gradient(135deg, #5568d3 0%, #653a8b 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            }
+
+        .btn-light {
+            background: #f7fafc;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+
+            .btn-light:hover {
+                background: #edf2f7;
+                color: #2d3748;
+                border-color: #cbd5e0;
+            }
+
+        .btn-outline-secondary {
+            border: 2px solid #e2e8f0;
+            color: #4a5568;
+            border-radius: 0 8px 8px 0;
+            padding: 0.5rem 0.75rem;
+        }
+
+            .btn-outline-secondary:hover {
+                background: #f7fafc;
+                border-color: #667eea;
+                color: #667eea;
+            }
+
+        /* Responsive */
+        @@media (max-width: 991px) {
+            .profile-img {
+                width: 90px;
+                height: 90px;
+            }
+
+            .profile-image-overlay i {
+                font-size: 24px;
+            }
+        }
+
+        @@media (max-width: 768px) {
+            .profile-img {
+                width: 80px;
+                height: 80px;
+            }
+
+            .stat-item {
+                padding: 8px;
+            }
+
+            .btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.9rem;
+            }
+        }
+
+        /* Animasyonlar */
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            animation: fadeInUp 0.5s ease;
+        }
+    </style>
+}
