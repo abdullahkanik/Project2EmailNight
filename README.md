@@ -80,29 +80,29 @@ Update-Database
 F5 ile Projeyi çalıştırabilirsiniz...
 ---
 ## 👤 Kullanıcı Kayıt (Register)
-<img width="1920" height="1080" alt="proje2 1" src="https://github.com/user-attachments/assets/8f4478f6-4a38-4385-9666-4ba7f52980ac" />
+<img width="1600" height="900" alt="proje2 1" src="https://github.com/user-attachments/assets/8f4478f6-4a38-4385-9666-4ba7f52980ac" />
 ---
 ## 🔐 Email Doğrulama
-<img width="1920" height="1080" alt="proje2 2" src="https://github.com/user-attachments/assets/d0522d8b-57bc-4858-8009-37e9b8cabf9c" />
-<img width="1920" height="1080" alt="proje2 3" src="https://github.com/user-attachments/assets/bff4f9e2-c5ad-492f-a8bf-b1584d66c45e" />
+<img width="1600" height="900" alt="proje2 2" src="https://github.com/user-attachments/assets/d0522d8b-57bc-4858-8009-37e9b8cabf9c" />
+<img width="1600" height="900" alt="proje2 3" src="https://github.com/user-attachments/assets/bff4f9e2-c5ad-492f-a8bf-b1584d66c45e" />
 ---
 ## 🔑 Kullanıcı Giriş (Login)
-<img width="1920" height="1080" alt="proje2 4" src="https://github.com/user-attachments/assets/12c6aa8e-92b0-4020-872b-de102b290459" />
+<img width="1600" height="900" alt="proje2 4" src="https://github.com/user-attachments/assets/12c6aa8e-92b0-4020-872b-de102b290459" />
 ---
 ## 📥 Inbox
-<img width="1920" height="1080" alt="proje2 5" src="https://github.com/user-attachments/assets/dad85763-7687-4734-8a81-9d277be30222" />
-<img width="1920" height="1080" alt="proje2 6" src="https://github.com/user-attachments/assets/d4dba884-060b-45bf-a075-0ade7d47bb0a" />
+<img width="1600" height="900" alt="proje2 5" src="https://github.com/user-attachments/assets/dad85763-7687-4734-8a81-9d277be30222" />
+<img width="1600" height="900" alt="proje2 6" src="https://github.com/user-attachments/assets/d4dba884-060b-45bf-a075-0ade7d47bb0a" />
 ---
 👨‍💻 Profil
-<img width="1920" height="1080" alt="proje2 7" src="https://github.com/user-attachments/assets/3284e9e7-12a9-464e-9129-ef28b581e20d" />
+<img width="1600" height="900" alt="proje2 7" src="https://github.com/user-attachments/assets/3284e9e7-12a9-464e-9129-ef28b581e20d" />
 ---
 ## 📄 Mesaj Detayı
-<img width="1920" height="1080" alt="proje2 8" src="https://github.com/user-attachments/assets/0f91d9e8-d64c-44dd-ba57-3cca7105ec2a" />
+<img width="1600" height="900" alt="proje2 8" src="https://github.com/user-attachments/assets/0f91d9e8-d64c-44dd-ba57-3cca7105ec2a" />
 ---
 ## ✉️ Mail Yazma
-<img width="1920" height="1080" alt="proje2 9" src="https://github.com/user-attachments/assets/437a8df4-e6a0-4a3e-82c0-1386fdbc10e0" />
+<img width="1600" height="900" alt="proje2 9" src="https://github.com/user-attachments/assets/437a8df4-e6a0-4a3e-82c0-1386fdbc10e0" />
 ---
 ## 📊 Dashboard
-<img width="1920" height="1080" alt="proje2 10" src="https://github.com/user-attachments/assets/b52607c8-4fb3-4778-aaa8-fab8b98d6a02" />
-<img width="1920" height="1080" alt="proje2 11" src="https://github.com/user-attachments/assets/988983d1-2a7b-41e8-80c5-c59e2b6be06e" />
+<img width="1600" height="900" alt="proje2 10" src="https://github.com/user-attachments/assets/b52607c8-4fb3-4778-aaa8-fab8b98d6a02" />
+<img width="1600" height="900" alt="proje2 11" src="https://github.com/user-attachments/assets/988983d1-2a7b-41e8-80c5-c59e2b6be06e" />
 
