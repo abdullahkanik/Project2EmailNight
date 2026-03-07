@@ -78,6 +78,7 @@ Migration işlemlerini uygulayın:
 Update-Database
 ```
 F5 ile Projeyi çalıştırabilirsiniz...
+---
 <img width="1914" height="941" alt="proje2 1" src="https://github.com/user-attachments/assets/8f4478f6-4a38-4385-9666-4ba7f52980ac" />
 <img width="1279" height="869" alt="proje2 2" src="https://github.com/user-attachments/assets/d0522d8b-57bc-4858-8009-37e9b8cabf9c" />
 <img width="776" height="477" alt="proje2 3" src="https://github.com/user-attachments/assets/bff4f9e2-c5ad-492f-a8bf-b1584d66c45e" />
